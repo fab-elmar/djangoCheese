@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
@@ -23,6 +24,9 @@ class Cheese(TimeStampedModel):
         return self.name
 
     country_of_origin=CountryField("Country of Origin", blank=True)
+    creator=models.ForeignKey(settings.AUTH_USER_MODEL,
+        null=True, on_delete=models.SET_NULL)
+        
     def get_absolute_url(self):
         """return absolute url for cheese detial page"""
         return reverse("cheeses:detail", kwargs={"slug": self.slug})
